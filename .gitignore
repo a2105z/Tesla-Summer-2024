@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+ingestion/data/
+stream/data/
+storage/data/
+ml/exports/
+observability/reports/
+
+edge/simulator/cpp/build/
+

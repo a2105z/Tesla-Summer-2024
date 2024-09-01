@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://drivecore.local/schemas/batch_schema_v1.json",
+  "title": "DriveCoreBatchV1",
+  "type": "object",
+  "required": [
+    "batch_id",
+    "schema_version",
+    "vehicle_id",
+    "event_count",
+    "encoding",
+    "compression",
+    "payload_b64"
+  ],
+  "properties": {
+    "batch_id": {
+      "type": "string",
+      "minLength": 8
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "vehicle_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "event_count": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "encoding": {
+      "type": "string",
+      "enum": [
+        "ndjson"
+      ]
+    },
+    "compression": {
+      "type": "string",
+      "enum": [
+        "gzip",
+        "none"
+      ]
+    },
+    "payload_b64": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Base64-encoded gzip-compressed NDJSON payload."
+    }
+  },
+  "additionalProperties": false
+}

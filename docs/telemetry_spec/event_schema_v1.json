@@ -1,0 +1,163 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://drivecore.local/schemas/event_schema_v1.json",
+  "title": "DriveCoreEventV1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "event_id",
+    "event_type",
+    "timestamp",
+    "vehicle_id",
+    "source",
+    "state"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "event_id": {
+      "type": "string",
+      "minLength": 8
+    },
+    "event_type": {
+      "type": "string",
+      "enum": [
+        "hard_brake",
+        "lane_departure",
+        "sudden_obstacle"
+      ]
+    },
+    "timestamp": {
+      "type": "number",
+      "description": "Unix timestamp in seconds with fractional precision."
+    },
+    "vehicle_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source": {
+      "type": "object",
+      "required": [
+        "device_type",
+        "firmware_version",
+        "simulator"
+      ],
+      "properties": {
+        "device_type": {
+          "type": "string"
+        },
+        "firmware_version": {
+          "type": "string"
+        },
+        "simulator": {
+          "type": "string",
+          "enum": [
+            "python",
+            "cpp"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "operator_command": {
+      "type": "string",
+      "description": "Optional text command representing high-level driving intent."
+    },
+    "vision": {
+      "type": "object",
+      "required": [
+        "frame_id",
+        "lighting",
+        "scene_hint"
+      ],
+      "properties": {
+        "frame_id": { "type": "string" },
+        "lighting": {
+          "type": "string",
+          "enum": ["day", "night"]
+        },
+        "scene_hint": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "state": {
+      "type": "object",
+      "required": [
+        "speed_mps",
+        "brake_force",
+        "lane_offset_m",
+        "obstacle_distance_m",
+        "steering_deg",
+        "camera_frame_id"
+      ],
+      "properties": {
+        "speed_mps": { "type": "number", "minimum": 0 },
+        "brake_force": { "type": "number", "minimum": 0, "maximum": 1 },
+        "lane_offset_m": { "type": "number" },
+        "obstacle_distance_m": { "type": "number", "minimum": 0 },
+        "steering_deg": { "type": "number" },
+        "camera_frame_id": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "context": {
+      "type": "object",
+      "required": [
+        "pre_context",
+        "post_context",
+        "pre_ticks",
+        "post_ticks"
+      ],
+      "properties": {
+        "pre_context": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/stateSnapshot"
+          }
+        },
+        "post_context": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/stateSnapshot"
+          }
+        },
+        "pre_ticks": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "post_ticks": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "stateSnapshot": {
+      "type": "object",
+      "required": [
+        "timestamp",
+        "speed_mps",
+        "brake_force",
+        "lane_offset_m",
+        "obstacle_distance_m",
+        "steering_deg",
+        "camera_frame_id"
+      ],
+      "properties": {
+        "timestamp": { "type": "number" },
+        "speed_mps": { "type": "number", "minimum": 0 },
+        "brake_force": { "type": "number", "minimum": 0, "maximum": 1 },
+        "lane_offset_m": { "type": "number" },
+        "obstacle_distance_m": { "type": "number", "minimum": 0 },
+        "steering_deg": { "type": "number" },
+        "camera_frame_id": { "type": "string" }
+      },
+      "additionalProperties": false
+    }
+  }
+}

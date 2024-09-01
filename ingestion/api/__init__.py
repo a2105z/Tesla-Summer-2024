@@ -1,0 +1,2 @@
+"""DriveCore ingestion service package."""
+
